@@ -1,10 +1,17 @@
 sudo: required
-language: general
+language: generic
 services:
   - docker
 
 before_install:
   - docker build -t gonegitterdunn/docker-react -f Dockerfile.dev .
 
-script:
-  - docker run -e CI=true gonegitterdunn/docker-react npm run test
+deploy:
+  provider: elasticbeanstalk
+  region:   "eu-west-1"
+  app: "docker"
+  env: "Docker-env"
+  bucket-name: "elasticbeanstalk-eu-west-1-xxxxxxxx"
+  bucket-path: "docker"
+  on:
+    branch: master
